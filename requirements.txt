@@ -1,3 +1,6 @@
 # viktor==13.5.1
 statsmodels
 darts
+numpy
+pandas
+matplotlib

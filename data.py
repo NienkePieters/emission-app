@@ -13,7 +13,7 @@ logging.disable(logging.CRITICAL)
 
 ### ---- Read data ----
 
-df = pd.read_csv('emission-app/data/monthly_in_situ_co2_mlo.csv',
+df = pd.read_csv('data/monthly_in_situ_co2_mlo.csv',
                   comment = '"', header = [0,1,2], na_values = '-99.99')
 
 cols = [' '.join(col).replace(' ', '') for col in df.columns.values]

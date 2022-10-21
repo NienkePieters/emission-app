@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 from io import StringIO
+from data import forecast_naive
+from data import series
 
 class Parametrization(ViktorParametrization):
     modeltype = OptionField('Choose a model type for forecastnig co2 emissions:', options=['Naive', 'Exponential Smoothing', 'Linear Regression'], default='Naive')
@@ -21,17 +23,14 @@ class Controller(ViktorController):
         #initialize figure
         fig = plt.figure(figsize = (8,5))
 
-        from data import series
-
         if params.modeltype == 'Naive' :
             model_name = 'Naive Seasonal'
-            from data import forecast_naive
             forecast = forecast_naive  
 
         idx = -144
         series[idx:].plot(label='Actual Values')
         forecast[idx:].plot(label= 'Forecast')
-        plt.plot(series, forecast_naive)
+        
         plt.title(model_name)
 
         svg_data = StringIO()
