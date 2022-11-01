@@ -31,11 +31,31 @@ df = df.resample('M').sum()
 series = TimeSeries.from_dataframe(df)
 start = pd.Timestamp('123115')
 
+df_metrics = pd.DataFrame()
+
+def metrics(series, forecast, model_name):
+    mae_ = mae(series, forecast)
+    rmse_ = rmse(series, forecast)
+    mape_ = mape(series, forecast)
+    smape_ = smape(series, forecast)
+    r2_score_ = r2_score(series, forecast)
+
+    dict_ = {'MAE': mae_, 'RMSE': rmse_,
+             'MAPE': mape_, 'SMAPE': smape_,
+             'R2': r2_score_}
+
+    df = pd.DataFrame(dict_, index = [model_name])
+
+    return(df.round(decimals = 2))
+
 ### Create a naive forecasting model
 model_naive = NaiveSeasonal(K = 12)
 forecast_naive = model_naive.historical_forecasts(series, start=start, forecast_horizon=12, verbose=True)
 
-def naive_model(series):
-    model_naive = NaiveSeasonal(K=12)
-    forecast_naive = model_naive.historical_forecasts(series, start=start, forecast_horizon=12, verbose=True)
-    return forecast_naive
+### Create a Exponential Smoothing forecasting model
+model_exp = ExponentialSmoothing(seasonal_periods = 12)
+forecast_exp = model_exp.historical_forecasts(series, start=start, forecast_horizon=12, verbose=True)
+
+### Create a Linear Regression forecasting model
+model_reg = LinearRegressionModel(lags = 12)
+forecast_reg = model_reg.historical_forecasts(series, start=start, forecast_horizon=12, verbose=True)
