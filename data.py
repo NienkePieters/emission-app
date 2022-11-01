@@ -31,23 +31,6 @@ df = df.resample('M').sum()
 series = TimeSeries.from_dataframe(df)
 start = pd.Timestamp('123115')
 
-df_metrics = pd.DataFrame()
-
-def metrics(series, forecast, model_name):
-    mae_ = mae(series, forecast)
-    rmse_ = rmse(series, forecast)
-    mape_ = mape(series, forecast)
-    smape_ = smape(series, forecast)
-    r2_score_ = r2_score(series, forecast)
-
-    dict_ = {'MAE': mae_, 'RMSE': rmse_,
-             'MAPE': mape_, 'SMAPE': smape_,
-             'R2': r2_score_}
-
-    df = pd.DataFrame(dict_, index = [model_name])
-
-    return(df.round(decimals = 2))
-
 ### Create a naive forecasting model
 model_naive = NaiveSeasonal(K = 12)
 forecast_naive = model_naive.historical_forecasts(series, start=start, forecast_horizon=12, verbose=True)
